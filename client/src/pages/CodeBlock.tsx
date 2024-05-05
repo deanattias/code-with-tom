@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { io } from 'socket.io-client';
-import { Button, Typography, Box } from '@mui/material';
+import { Typography, Box, IconButton } from '@mui/material';
+import { ArrowBack } from '@mui/icons-material';
 import { Editor } from '@monaco-editor/react';
 
 const socket = io('http://localhost:8080');
@@ -69,21 +70,16 @@ const CodeBlock: React.FC = () => {
           readOnly: role === 'mentor',
           fontSize: 14,
           lineNumbers: 'on',
-          minimap: { enabled: true },
+          minimap: { enabled: false },
           scrollBeyondLastLine: false,
-          wordWrap: 'on',
+          wordWrap: 'off',
         }}
       />
       <Box marginTop="20px">
         <Link to="/" style={{ textDecoration: 'none' }}>
-          <Button
-            variant="outlined"
-            color="primary"
-            size="large"
-            style={{ borderRadius: '8px' }}
-          >
-            Change Code Block
-          </Button>
+          <IconButton color="primary" aria-label="back to selection">
+            <ArrowBack fontSize="large" />
+          </IconButton>
         </Link>
       </Box>
     </Box>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardContent, CardHeader, Grid, Typography } from '@mui/material';
+import { Card, CardContent, Grid, Typography, Box } from '@mui/material';
 
 interface CodeBlock {
   id: number;
@@ -18,8 +18,10 @@ const CodeBlockList: React.FC = () => {
 
   const cardStyles = {
     borderRadius: '8px',
-    minHeight: '120px',
-    padding: '16px',
+    minHeight: '150px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     transition: 'transform 0.2s, box-shadow 0.2s',
     '&:hover': {
       transform: 'scale(1.05)',
@@ -33,18 +35,12 @@ const CodeBlockList: React.FC = () => {
         <Grid item xs={12} sm={6} md={4} key={block.id}>
           <Link to={`/code-block/${block.id}`} style={{ textDecoration: 'none' }}>
             <Card elevation={5} sx={cardStyles}>
-              <CardHeader
-                title={
-                  <Typography variant="h5" component="h2" color="textPrimary">
+              <CardContent>
+                <Box display="flex" flexDirection="column" alignItems="center">
+                  <Typography variant="h5" component="h2" color="textPrimary" align="center">
                     {block.title}
                   </Typography>
-                }
-                titleTypographyProps={{ align: 'center' }}
-              />
-              <CardContent>
-                <Typography variant="body2" align="center">
-                  Click to view and edit this code block.
-                </Typography>
+                </Box>
               </CardContent>
             </Card>
           </Link>
