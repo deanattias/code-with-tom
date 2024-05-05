@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="ca9544bd-c35f-42c1-b298-db88f19c760a" name="codewithtom Mapping">
+      <data-sources db="f2b98d40-3acd-4e03-ba3a-63df719d8129" ddl="fe1b60eb-91dc-4fdf-bac9-222b0eb49ee3" />
+      <scope>
+        <node kind="database">
+          <name qname="@" />
+          <name qname="codewithtom" />
+          <name qname="postgres" />
+        </node>
+      </scope>
+    </mapping>
+  </component>
+</project>

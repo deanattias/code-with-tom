@@ -1,6 +1,7 @@
 {
   "name": "code-with-tom",
   "private": true,
+  "proxy": "http://localhost:8080",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -10,8 +11,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@material-ui/core": "^4.12.4",
+    "@monaco-editor/react": "^4.6.0",
+    "@mui/icons-material": "^5.15.16",
+    "@mui/material": "^5.15.16",
+    "highlight.js": "^11.9.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.23.0",
+    "react-window": "^1.8.10",
+    "socket.io-client": "^4.7.5"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
