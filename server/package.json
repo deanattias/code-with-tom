@@ -1,5 +1,36 @@
 {
   "dependencies": {
-    "express": "^4.19.2"
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "pg": "^8.11.5",
+    "socket.io": "^4.7.5",
+    "ts": "^0.2.2"
+  },
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "PORT=8080 node dist/index.js",
+    "dev": "nodemon src/index.ts",
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deanattias/code-with-tom.git"
+  },
+  "author": "dean-attias",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deanattias/code-with-tom/issues"
+  },
+  "homepage": "https://github.com/deanattias/code-with-tom#readme",
+  "description": "",
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.12.8",
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
   }
 }
