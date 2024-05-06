@@ -7,10 +7,12 @@ import cors from 'cors';
 
 dotenv.config();
 
+// Initialize Express and HTTP Server
 const app = express();
 const server = http.createServer(app);
 const port = process.env.PORT || 8080;
 
+// Initialize Socket.IO server with CORS settings
 const io = new Server(server, {
   cors: {
     origin: '*',
@@ -23,16 +25,12 @@ const pool = new Pool({
   host: process.env.db_host,
   database: process.env.db_database,
   password: process.env.db_password,
-  port: parseInt(process.env.db_password || '5432', 10),
+  port: parseInt(process.env.db_port || '5432', 10),
 });
 
-console.dir(pool)
-
-
-// Middleware to parse JSON requests
+// Middleware
 app.use(express.json());
 app.use(cors({ origin: 'http://localhost:3000' }));
-
 
 // API route to fetch all code block titles
 app.get('/api/code-blocks', async (req: Request, res: Response) => {
@@ -61,22 +59,71 @@ app.get('/api/code-blocks/:id', async (req: Request, res: Response) => {
   }
 });
 
+// Store participants for each room (both mentors and students)
+const roomParticipants = new Map<string, { mentors: Set<string>, students: Set<string> }>();
+
 // Socket.IO event handling
 io.on('connection', (socket: Socket) => {
   console.log(`A user connected: ${socket.id}`);
 
-  socket.on('join-room', (roomId) => {
+  socket.on('join-room', (roomId: string) => {
     socket.join(roomId);
-    console.log(`Socket ${socket.id} joined room: ${roomId}`);
+
+    // Initialize room participants if not already set
+    if (!roomParticipants.has(roomId)) {
+      roomParticipants.set(roomId, { mentors: new Set(), students: new Set() });
+    }
+
+    const roomData = roomParticipants.get(roomId);
+
+    // Determine the role (mentor/student) ensuring only one mentor
+    if (roomData && roomData.mentors.size === 0) {
+      roomData.mentors.add(socket.id);
+      socket.emit('assign-role', { role: 'mentor' });
+    } else if (roomData && !roomData.mentors.has(socket.id) && !roomData.students.has(socket.id)) {
+      roomData.students.add(socket.id);
+      socket.emit('assign-role', { role: 'student' });
+    }
+
+    // Emit the updated counts to all users in the room
+    if (roomData) {
+      io.to(roomId).emit('user-counts', {
+        mentors: roomData.mentors.size,
+        students: roomData.students.size,
+      });
+    }
+
+    const role = roomData && roomData.mentors.has(socket.id) ? 'mentor' : 'student';
+    console.log(`A ${role} joined room ${roomId} (ID: ${socket.id})`);
   });
 
   socket.on('code-changed', ({ roomId, newCode }) => {
-    socket.to(roomId).emit('code-changed', newCode);
-    console.log(`Code changed in room ${roomId} by ${socket.id}`);
+    const roomData = roomParticipants.get(roomId);
+
+    // Ensure only students can emit code changes
+    if (roomData && roomData.students.has(socket.id)) {
+      socket.to(roomId).emit('code-changed', newCode);
+      console.log(`A code change made by a student in room ${roomId} (ID: ${socket.id})`);
+    }
   });
 
   socket.on('disconnect', () => {
-    console.log(`A user disconnected: ${socket.id}`);
+    console.log(`User disconnected: ${socket.id}`);
+
+    // Remove the user from the room's participant sets and update counts
+    for (const [roomId, roomData] of roomParticipants.entries()) {
+      if (roomData.mentors.has(socket.id)) {
+        roomData.mentors.delete(socket.id);
+      } else if (roomData.students.has(socket.id)) {
+        roomData.students.delete(socket.id);
+      }
+
+      // Emit updated counts to remaining users in the room
+      io.to(roomId).emit('user-counts', {
+        mentors: roomData.mentors.size,
+        students: roomData.students.size,
+      });
+    }
   });
 });
 
