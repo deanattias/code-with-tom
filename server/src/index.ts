@@ -30,7 +30,7 @@ const pool = new Pool({
 
 // Middleware
 app.use(express.json());
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors({ origin: '*' }));
 
 // API route to fetch all code block titles
 app.get('/api/code-blocks', async (req: Request, res: Response) => {

@@ -1,47 +1,47 @@
 [
   {
     "title": "Variables and Data Types",
-    "code": "// TASK: Declare a variable named \"age\" (number) and set it to 18.\n// Declare a variable named \"name\" (string) and set it to \"Alice\".\n// Declare a variable named \"isStudent\" (boolean) and set it to true.\n\nconst age = ;\nconst name = ;\nconst isStudent = ;\n",
-    "solution": "// TASK: Declare a variable named \"age\" (number) and set it to 18.\n// Declare a variable named \"name\" (string) and set it to \"Alice\".\n// Declare a variable named \"isStudent\" (boolean) and set it to true.\n\nconst age = 18;\nconst name = \"Alice\";\nconst isStudent = true;\n"
+    "code": "// TASK: Declare a variable named \"age\" (number) and set it to 18.\n// Declare a variable named \"name\" (string) and set it to \"Alice\".\n// Declare a variable named \"isStudent\" (boolean) and set it to true.\n\nconst age = \nconst name = \nconst isStudent = \n",
+    "solution": "// TASK: Declare a variable named \"age\" (number) and set it to 18.\n// Declare a variable named \"name\" (string) and set it to \"Alice\".\n// Declare a variable named \"isStudent\" (boolean) and set it to true.\n\nconst age = 18\nconst name = \"Alice\"\nconst isStudent = true\n"
   },
   {
     "title": "Simple Addition Function",
     "code": "// TASK: Create a function named \"add\" that takes two parameters and returns their sum.\n// Example: The function call `add(2, 3)` should return 5.\n\nfunction add(a, b) {\n  \n}\n",
-    "solution": "// TASK: Create a function named \"add\" that takes two parameters and returns their sum.\n// Example: The function call `add(2, 3)` should return 5.\n\nfunction add(a, b) {\n  return a + b;\n}\n"
+    "solution": "// TASK: Create a function named \"add\" that takes two parameters and returns their sum.\n// Example: The function call `add(2, 3)` should return 5.\n\nfunction add(a, b) {\n  return a + b\n}\n"
   },
   {
     "title": "Basic Conditional Check",
     "code": "// TASK: Write a function named \"isPositive\" that accepts a number and returns true if the number is positive, otherwise false.\n// Example: `isPositive(5)` should return true, while `isPositive(-3)` should return false.\n\nfunction isPositive(num) {\n  \n}\n",
-    "solution": "// TASK: Write a function named \"isPositive\" that accepts a number and returns true if the number is positive, otherwise false.\n// Example: `isPositive(5)` should return true, while `isPositive(-3)` should return false.\n\nfunction isPositive(num) {\n  return num > 0;\n}\n"
+    "solution": "// TASK: Write a function named \"isPositive\" that accepts a number and returns true if the number is positive, otherwise false.\n// Example: `isPositive(5)` should return true, while `isPositive(-3)` should return false.\n\nfunction isPositive(num) {\n  return num > 0\n}\n"
   },
   {
-    "title": "Loop (For)",
-    "code": "// TASK: Write a for loop that counts from 1 to 4 and stores each value in an array called \"count\".\n// The array should contain [1, 2, 3, 4].\n\nconst count = [];\nfor (let i = 1; i <= 4; i++) {\n  \n}\n",
-    "solution": "// TASK: Write a for loop that counts from 1 to 4 and stores each value in an array called \"count\".\n// The array should contain [1, 2, 3, 4].\n\nconst count = [];\nfor (let i = 1; i <= 4; i++) {\n  count.push(i);\n}\n"
+    "title": "For Loop",
+    "code": "// TASK: Write a for loop that counts from 1 to 4 and stores each value in an array called \"count\".\n// The array should contain [1, 2, 3, 4].\n\nconst count = []\nfor (let i = 1; i <= 4; i++) {\n  \n}\n",
+    "solution": "// TASK: Write a for loop that counts from 1 to 4 and stores each value in an array called \"count\".\n// The array should contain [1, 2, 3, 4].\n\nconst count = []\nfor (let i = 1; i <= 4; i++) {\n  count.push(i)\n}\n"
   },
   {
-    "title": "Loop (While)",
-    "code": "// TASK: Use a while loop to count from 1 to 4 and store each number in an array called \"numbers\".\n// The array should contain [1, 2, 3, 4].\n\nconst numbers = [];\nlet index = 1;\nwhile (index <= 4) {\n  \n}\n",
-    "solution": "// TASK: Use a while loop to count from 1 to 4 and store each number in an array called \"numbers\".\n// The array should contain [1, 2, 3, 4].\n\nconst numbers = [];\nlet index = 1;\nwhile (index <= 4) {\n  numbers.push(index);\n  index++;\n}\n"
+    "title": "While Loop",
+    "code": "// TASK: Use a while loop to count from 1 to 4 and store each number in an array called \"numbers\".\n// The array should contain [1, 2, 3, 4].\n\nconst numbers = []\nlet index = 1\nwhile (index <= 4) {\n  \n}\n",
+    "solution": "// TASK: Use a while loop to count from 1 to 4 and store each number in an array called \"numbers\".\n// The array should contain [1, 2, 3, 4].\n\nconst numbers = []\nlet index = 1\nwhile (index <= 4) {\n  numbers.push(index)\n  index++\n}\n"
   },
   {
     "title": "Arrays",
-    "code": "// TASK: Create an array named \"colors\" with three strings: \"red\", \"green\", and \"blue\".\n\nconst colors = [];\n",
-    "solution": "// TASK: Create an array named \"colors\" with three strings: \"red\", \"green\", and \"blue\".\n\nconst colors = [\"red\", \"green\", \"blue\"];\n"
+    "code": "// TASK: Create an array named \"colors\" with three strings: \"red\", \"green\", and \"blue\".\n\nconst colors = []\n",
+    "solution": "// TASK: Create an array named \"colors\" with three strings: \"red\", \"green\", and \"blue\".\n\nconst colors = [\"red\", \"green\", \"blue\"]\n"
   },
   {
     "title": "Objects",
-    "code": "// TASK: Create an object named \"student\" with the properties \"firstName\" and \"grade\".\n// Set \"firstName\" to \"Jane\" and \"grade\" to \"A\".\n\nconst student = {};\n",
-    "solution": "// TASK: Create an object named \"student\" with the properties \"firstName\" and \"grade\".\n// Set \"firstName\" to \"Jane\" and \"grade\" to \"A\".\n\nconst student = {\n  firstName: \"Jane\",\n  grade: \"A\"\n};\n"
+    "code": "// TASK: Create an object named \"student\" with the properties \"firstName\" and \"grade\".\n// Set \"firstName\" to \"Jane\" and \"grade\" to \"A\".\n\nconst student = {}\n",
+    "solution": "// TASK: Create an object named \"student\" with the properties \"firstName\" and \"grade\".\n// Set \"firstName\" to \"Jane\" and \"grade\" to \"A\".\n\nconst student = {\n  firstName: \"Jane\",\n  grade: \"A\"\n}\n"
   },
   {
-    "title": "Async Function Example",
+    "title": "Async Function",
     "code": "// TASK: Write an async function named \"delayedResponse\" that returns \"Done!\" after waiting 1 second.\n\nasync function delayedResponse() {\n  \n}\n",
-    "solution": "// TASK: Write an async function named \"delayedResponse\" that returns \"Done!\" after waiting 1 second.\n\nasync function delayedResponse() {\n  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\n  await delay(1000);\n  return \"Done!\";\n}\n"
+    "solution": "// TASK: Write an async function named \"delayedResponse\" that returns \"Done!\" after waiting 1 second.\n\nasync function delayedResponse() {\n  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))\n  await delay(1000)\n  return \"Done!\"\n}\n"
   },
   {
     "title": "Basic Comparison",
     "code": "// TASK: Write a function named \"isEqual\" that accepts two parameters and returns true if both are equal, otherwise false.\n// Example: `isEqual(10, 10)` should return true, while `isEqual(5, 7)` should return false.\n\nfunction isEqual(a, b) {\n  \n}\n",
-    "solution": "// TASK: Write a function named \"isEqual\" that accepts two parameters and returns true if both are equal, otherwise false.\n// Example: `isEqual(10, 10)` should return true, while `isEqual(5, 7)` should return false.\n\nfunction isEqual(a, b) {\n  return a === b;\n}\n"
+    "solution": "// TASK: Write a function named \"isEqual\" that accepts two parameters and returns true if both are equal, otherwise false.\n// Example: `isEqual(10, 10)` should return true, while `isEqual(5, 7)` should return false.\n\nfunction isEqual(a, b) {\n  return a === b\n}\n"
   }
 ]

@@ -26,7 +26,7 @@ const Lobby: React.FC = () => {
     <Box textAlign="center" marginTop="40px">
     <img src={avatar} alt="Avatar" style={{ width: '300px'}} />
       <Typography variant="h2" component="h1" gutterBottom style={{ color: '#FFFFFF' }} sx={fadeIn}>
-        Code With Tom
+        &lt; Code With Tom &gt;
       </Typography>
       <Typography variant="h5" component="h3" color="lightblue" gutterBottom sx={fadeIn}>
         Please select a code block to begin

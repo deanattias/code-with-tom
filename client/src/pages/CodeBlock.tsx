@@ -1,22 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 import { Typography, Box, IconButton, Snackbar, Alert } from '@mui/material';
 import { ArrowBack, School, Group, EmojiEmotions } from '@mui/icons-material';
 import { Editor } from '@monaco-editor/react';
 import Confetti from 'react-confetti';
 
-// Interface to represent the code block data structure
+// Interface representing the code block data structure
 interface CodeBlockData {
   title: string;
   code: string;
   solution: string;
 }
 
-const socket = io('http://localhost:8080');
-
+// CodeBlock component
 const CodeBlock: React.FC = () => {
+  // Retrieve the ID parameter from the route
   const { id } = useParams<{ id: string }>();
+  const socket = useRef<Socket | null>(null);
+
+  // Define state hooks
   const [role, setRole] = useState<string>('student');
   const [code, setCode] = useState('');
   const [title, setTitle] = useState('');
@@ -27,39 +30,48 @@ const CodeBlock: React.FC = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [welcomeMessage, setWelcomeMessage] = useState('');
 
+  // Initialize socket and fetch code block data
   useEffect(() => {
-    // Fetch the code block from the server or JSON file
-    fetch(`http://localhost:8080/api/code-blocks/${id}`)
+    const backendUrl = 'http://localhost:8080';
+    socket.current = io(backendUrl);
+
+    // Fetch the code block data from the server
+    fetch(`${backendUrl}/api/code-blocks/${id}`)
       .then((res) => res.json())
       .then((data: CodeBlockData) => {
         setTitle(data.title);
         setCode(data.code);
         setSolution(data.solution);
-        socket.emit('join-room', id);
+        socket.current?.emit('join-room', id);
       });
 
-    // Listen for role assignment
-    socket.on('assign-role', (data) => {
+    // Define socket event handlers
+    const handleAssignRole = (data: { role: string }) => {
       setRole(data.role);
       setWelcomeMessage(`You are logged in as a ${data.role}`);
       setOpenSnackbar(true);
-    });
+    };
 
-    // Listen for updated participant counts
-    socket.on('user-counts', (counts) => {
+    const handleUserCounts = (counts: { mentors: number; students: number }) => {
       setMentorCount(counts.mentors);
       setStudentCount(counts.students);
-    });
+    };
 
-    // Update the editor content based on real-time changes
-    socket.on('code-changed', (newCode: string) => {
+    const handleCodeChanged = (newCode: string) => {
       setCode(newCode);
-    });
+    };
 
+    // Set up socket event listeners
+    socket.current?.on('assign-role', handleAssignRole);
+    socket.current?.on('user-counts', handleUserCounts);
+    socket.current?.on('code-changed', handleCodeChanged);
+
+    // Clean up socket listeners on unmount
     return () => {
-      socket.off('code-changed');
-      socket.off('assign-role');
-      socket.off('user-counts');
+      socket.current?.off('assign-role', handleAssignRole);
+      socket.current?.off('user-counts', handleUserCounts);
+      socket.current?.off('code-changed', handleCodeChanged);
+      socket.current?.disconnect();
     };
   }, [id]);
 
@@ -69,25 +81,24 @@ const CodeBlock: React.FC = () => {
     return withoutComments.replace(/\s+/g, '').replace(/\r\n/g, '\n').trim();
   };
 
-  // Handle code changes and check for matching against the solution
+  // Handle code changes and check if it matches the solution
   const handleCodeChange = (value: string | undefined) => {
     if (role !== 'mentor' && !isCompleted) {
       const newCode = value ?? '';
       const normalizedCode = normalizeCode(newCode);
       const normalizedSolution = normalizeCode(solution);
 
-      // Update state and emit changes via socket
+      // Update the code and notify via socket
       setCode(newCode);
-      socket.emit('code-changed', { roomId: id, newCode });
+      socket.current?.emit('code-changed', { roomId: id, newCode });
 
-      // Check if the student's code matches the normalized solution
+      // Check if the student's code matches the solution
       if (normalizedCode === normalizedSolution) {
         setIsCompleted(true);
       }
     }
   };
 
-  // Close the snackbar notification
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
@@ -107,21 +118,22 @@ const CodeBlock: React.FC = () => {
         {title}
       </Typography>
 
-      {isCompleted && <Confetti width={window.innerWidth} height={window.innerHeight} style={{ position: 'fixed', top: 0, left: 0 }} />}
-
       {isCompleted && (
-        <Box
-          position="fixed"
-          top="25%"
-          left="33%"
-          zIndex={4}
-          sx={{
-            transform: 'translate(-50%, -50%)',
-            animation: 'smiley-pop 1s ease-out forwards',
-          }}
-        >
-          <EmojiEmotions fontSize="large" sx={{ fontSize: '500px', color: 'yellow' }} />
-        </Box>
+        <>
+          <Confetti width={window.innerWidth} height={window.innerHeight} style={{ position: 'fixed', top: 0, left: 0 }} />
+          <Box
+            position="fixed"
+            top="25%"
+            left="33%"
+            zIndex={4}
+            sx={{
+              transform: 'translate(-50%, -50%)',
+              animation: 'smiley-pop 1s ease-out forwards',
+            }}
+          >
+            <EmojiEmotions fontSize="large" sx={{ fontSize: '500px', color: 'yellow' }} />
+          </Box>
+        </>
       )}
 
       <Editor
@@ -187,7 +199,7 @@ const CodeBlock: React.FC = () => {
       {isCompleted && (
         <Snackbar
           open={isCompleted}
-          autoHideDuration={6000}
+          autoHideDuration={10000}
           onClose={() => setIsCompleted(false)}
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         >
