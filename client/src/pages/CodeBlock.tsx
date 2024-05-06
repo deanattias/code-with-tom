@@ -6,6 +6,13 @@ import { ArrowBack, School, Group, EmojiEmotions } from '@mui/icons-material';
 import { Editor } from '@monaco-editor/react';
 import Confetti from 'react-confetti';
 
+// Interface to represent the code block data structure
+interface CodeBlockData {
+  title: string;
+  code: string;
+  solution: string;
+}
+
 const socket = io('http://localhost:8080');
 
 const CodeBlock: React.FC = () => {
@@ -21,26 +28,30 @@ const CodeBlock: React.FC = () => {
   const [welcomeMessage, setWelcomeMessage] = useState('');
 
   useEffect(() => {
+    // Fetch the code block from the server or JSON file
     fetch(`http://localhost:8080/api/code-blocks/${id}`)
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: CodeBlockData) => {
         setTitle(data.title);
         setCode(data.code);
         setSolution(data.solution);
         socket.emit('join-room', id);
       });
 
+    // Listen for role assignment
     socket.on('assign-role', (data) => {
       setRole(data.role);
       setWelcomeMessage(`You are logged in as a ${data.role}`);
       setOpenSnackbar(true);
     });
 
+    // Listen for updated participant counts
     socket.on('user-counts', (counts) => {
       setMentorCount(counts.mentors);
       setStudentCount(counts.students);
     });
 
+    // Update the editor content based on real-time changes
     socket.on('code-changed', (newCode: string) => {
       setCode(newCode);
     });
@@ -52,18 +63,31 @@ const CodeBlock: React.FC = () => {
     };
   }, [id]);
 
+  // Normalize the code by removing comments and extra whitespace
+  const normalizeCode = (code: string): string => {
+    const withoutComments = code.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, '');
+    return withoutComments.replace(/\s+/g, '').replace(/\r\n/g, '\n').trim();
+  };
+
+  // Handle code changes and check for matching against the solution
   const handleCodeChange = (value: string | undefined) => {
     if (role !== 'mentor' && !isCompleted) {
       const newCode = value ?? '';
+      const normalizedCode = normalizeCode(newCode);
+      const normalizedSolution = normalizeCode(solution);
+
+      // Update state and emit changes via socket
       setCode(newCode);
       socket.emit('code-changed', { roomId: id, newCode });
 
-      if (newCode.trim() === solution.trim()) {
+      // Check if the student's code matches the normalized solution
+      if (normalizedCode === normalizedSolution) {
         setIsCompleted(true);
       }
     }
   };
 
+  // Close the snackbar notification
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
@@ -93,7 +117,6 @@ const CodeBlock: React.FC = () => {
           zIndex={4}
           sx={{
             transform: 'translate(-50%, -50%)',
-            zIndex: 2,
             animation: 'smiley-pop 1s ease-out forwards',
           }}
         >
