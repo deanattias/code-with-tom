@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Lobby from './Lobby';
-import CodeBlock from './CodeBlock';
-import '../App.css';
+import Lobby from './pages/Lobby.tsx';
+import CodeBlock from './pages/CodeBlock.tsx';
+import './App.css';
 
 const App: React.FC = () => {
   return (
