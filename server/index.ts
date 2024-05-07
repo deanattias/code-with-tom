@@ -14,9 +14,13 @@ const server = http.createServer(app);
 const port = process.env.PORT || 8080;
 
 // Start the server
-// @ts-ignore
-app.listen(port, '0.0.0.0', function (){
-  console.log(`Server running on port ${port}`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+app.get('/', (req, res) => {
+  res.send('Hello World!');
 });
 
 // Initialize Socket.IO server
