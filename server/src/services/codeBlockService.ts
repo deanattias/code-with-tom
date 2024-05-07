@@ -5,11 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const pool = new Pool({
-  user: process.env.db_username,
-  host: process.env.db_host,
-  database: process.env.db_database,
-  password: process.env.db_password,
-  port: parseInt(process.env.db_port || '5432', 10),
+  connectionString: process.env.DATABASE_URL
 });
 
 export const fetchAllCodeBlocks = async () => {
