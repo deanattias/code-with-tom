@@ -3,8 +3,8 @@ import http from 'http';
 import { Server } from 'socket.io';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import codeBlockRoutes from './routes/codeBlockRoutes';
-import { setupSocketHandlers } from './socket/socketHandlers';
+import codeBlockRoutes from './src/routes/codeBlockRoutes';
+import { setupSocketHandlers } from './src/socket/socketHandlers';
 
 dotenv.config();
 
