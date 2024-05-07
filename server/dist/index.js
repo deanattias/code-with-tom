@@ -8,8 +8,8 @@ const http_1 = __importDefault(require("http"));
 const socket_io_1 = require("socket.io");
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
-const codeBlockRoutes_1 = __importDefault(require("./routes/codeBlockRoutes"));
-const socketHandlers_1 = require("./socket/socketHandlers");
+const codeBlockRoutes_1 = __importDefault(require("./src/routes/codeBlockRoutes"));
+const socketHandlers_1 = require("./src/socket/socketHandlers");
 dotenv_1.default.config();
 // Initialize Express and HTTP Server
 const app = (0, express_1.default)();
