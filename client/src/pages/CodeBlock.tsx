@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { io, Socket } from 'socket.io-client';
 import { Typography, Box, IconButton, Snackbar, Alert } from '@mui/material';
@@ -6,16 +6,14 @@ import { ArrowBack, School, Group, EmojiEmotions } from '@mui/icons-material';
 import { Editor } from '@monaco-editor/react';
 import Confetti from 'react-confetti';
 
-// Interface representing the code block data structure
 interface CodeBlockData {
   title: string;
   code: string;
   solution: string;
 }
 
-// CodeBlock component
-const CodeBlock: React.FC = () => {
-  // Retrieve the ID parameter from the route
+export default function CodeBlock() {
+  // Retrieve ID parameter from route
   const { id } = useParams<{ id: string }>();
   const socket = useRef<Socket | null>(null);
 
@@ -35,7 +33,7 @@ const CodeBlock: React.FC = () => {
     const backendUrl = 'http://localhost:8080';
     socket.current = io(backendUrl);
 
-    // Fetch the code block data from the server
+    // Fetch code block data from server
     fetch(`${backendUrl}/api/code-blocks/${id}`)
       .then((res) => res.json())
       .then((data: CodeBlockData) => {
@@ -57,9 +55,6 @@ const CodeBlock: React.FC = () => {
       setStudentCount(counts.students);
     };
 
-    const handleCodeChanged = (newCode: string) => {
-      setCode(newCode);
-    };
 
     // Set up socket event listeners
     socket.current?.on('assign-role', handleAssignRole);
@@ -75,7 +70,14 @@ const CodeBlock: React.FC = () => {
     };
   }, [id]);
 
-  // Normalize the code by removing comments and extra whitespace
+  //
+  const handleCodeChanged = (newCode: string) => {
+    setCode(newCode);
+  };
+
+  // Normalize code by removing comments and extra whitespace
+  // Note that current code-check implementation is not ideal
+  // See suggestion below
   const normalizeCode = (code: string): string => {
     const withoutComments = code.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, '');
     return withoutComments.replace(/\s+/g, '').replace(/\r\n/g, '\n').trim();
@@ -88,11 +90,14 @@ const CodeBlock: React.FC = () => {
       const normalizedCode = normalizeCode(newCode);
       const normalizedSolution = normalizeCode(solution);
 
-      // Update the code and notify via socket
+      // Update code and notify via socket
       setCode(newCode);
       socket.current?.emit('code-changed', { roomId: id, newCode });
 
-      // Check if the student's code matches the solution
+      // Check if student's code matches the solution
+      // Current implementation is not ideal as student code must be identical to solution text
+      // Better approach: send code to a backend service that executes it and returns the result
+      // See https://github.com/microsoft/monaco-editor.git
       if (normalizedCode === normalizedSolution) {
         setIsCompleted(true);
       }
@@ -118,6 +123,7 @@ const CodeBlock: React.FC = () => {
         {title}
       </Typography>
 
+      {/*Trigger confetti and a big smiley face on task completion*/}
       {isCompleted && (
         <>
           <Confetti width={window.innerWidth} height={window.innerHeight} style={{ position: 'fixed', top: 0, left: 0 }} />
@@ -174,6 +180,7 @@ const CodeBlock: React.FC = () => {
         flexDirection="column"
         alignItems="flex-start"
       >
+        {/*Formatting role string to appear as Mentor || Student*/}
         <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 1 }}>
           Logged in as: {role.charAt(0).toUpperCase() + role.slice(1)}
         </Typography>
@@ -196,6 +203,7 @@ const CodeBlock: React.FC = () => {
         </Alert>
       </Snackbar>
 
+      {/*Completion notification triggered when student completes task*/}
       {isCompleted && (
         <Snackbar
           open={isCompleted}
@@ -210,6 +218,4 @@ const CodeBlock: React.FC = () => {
       )}
     </Box>
   );
-};
-
-export default CodeBlock;
+}

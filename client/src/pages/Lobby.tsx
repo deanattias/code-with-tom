@@ -1,4 +1,3 @@
-import React from 'react';
 import { Typography, Box } from '@mui/material';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import CodeBlockList from '../components/CodeBlockList';
@@ -21,22 +20,20 @@ const slideDown = {
   },
 };
 
-const Lobby: React.FC = () => {
+export default function Lobby() {
   return (
     <Box textAlign="center" marginTop="40px">
-    <img src={avatar} alt="Avatar" style={{ width: '300px'}} />
-      <Typography variant="h2" component="h1" gutterBottom style={{ color: '#FFFFFF' }} sx={fadeIn}>
-        &lt; Code With Tom &gt;
-      </Typography>
-      <Typography variant="h5" component="h3" color="lightblue" gutterBottom sx={fadeIn}>
-        Please select a code block to begin
-      </Typography>
-      <ArrowDownwardIcon fontSize="large" color="primary" sx={slideDown} />
-      <Box marginTop="20px">
-        <CodeBlockList />
-      </Box>
+      <img src={avatar} alt="Avatar" style={{ width: '300px'}} />
+        <Typography variant="h2" component="h1" gutterBottom style={{ color: '#FFFFFF' }} sx={fadeIn}>
+          &lt; Code With Tom &gt;
+        </Typography>
+        <Typography variant="h5" component="h3" color="gray" gutterBottom sx={fadeIn}>
+          Please select a code block to begin
+        </Typography>
+        <ArrowDownwardIcon fontSize="large" color="primary" sx={slideDown} />
+        <Box marginTop="20px">
+            <CodeBlockList />
+        </Box>
     </Box>
   );
-};
-
-export default Lobby;
+}
