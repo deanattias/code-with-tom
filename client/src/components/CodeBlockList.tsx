@@ -11,7 +11,7 @@ export default function CodeBlockList() {
   const [codeBlocks, setCodeBlocks] = useState<CodeBlock[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/code-blocks')
+    fetch('https://code-with-tom-deans-projects-729ccfbf.vercel.app/api/code-blocks')
       .then(res => res.json())
       .then(data => setCodeBlocks(data));
   }, []);

@@ -1,7 +1,7 @@
 {
   "name": "code-with-tom",
   "private": true,
-  "proxy": "http://localhost:8080",
+  "proxy": "https://code-with-tom-deans-projects-729ccfbf.vercel.app/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
