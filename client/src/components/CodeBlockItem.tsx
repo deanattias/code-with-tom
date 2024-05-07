@@ -8,6 +8,7 @@ interface CodeBlockItemProps {
 
 export default function CodeBlockItem({ id, title }: CodeBlockItemProps) {
   const cardStyles = {
+    backgroundColor: '#6C433416',
     borderRadius: '8px',
     minHeight: '150px',
     display: 'flex',
@@ -25,7 +26,7 @@ export default function CodeBlockItem({ id, title }: CodeBlockItemProps) {
       <Card elevation={5} sx={cardStyles}>
         <CardContent>
           <Box display="flex" flexDirection="column" alignItems="center">
-            <Typography variant="h5" component="h2" color="textPrimary" align="center">
+            <Typography variant="h5" component="h2" color="#C3BBBBE2" align="center">
               {title}
             </Typography>
           </Box>

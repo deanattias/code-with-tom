@@ -2,12 +2,14 @@
 
 A collaborative coding platform that facilitates real-time problem-solving and educational experiences.
 
+https://code-with-tom-deans-projects-729ccfbf.vercel.app/
+
 ## Table of Contents
 
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Credits] (#credits)
+- [Credits](#credits)
 
 ## Features
 
