@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { fetchAllCodeBlocks, fetchCodeBlockById } from '../services/codeBlockService';
 
+
 export const getCodeBlocks = async (req: Request, res: Response) => {
   try {
     const blocks = await fetchAllCodeBlocks();

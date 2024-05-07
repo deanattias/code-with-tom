@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import codeBlockRoutes from './src/routes/codeBlockRoutes';
 import { setupSocketHandlers } from './src/socket/socketHandlers';
+import morgan from 'morgan';
+
 
 dotenv.config();
 
@@ -14,6 +16,7 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors({ origin: '*' }));
+app.use(morgan('dev'));
 
 // API Routes
 app.use('/api/code-blocks', codeBlockRoutes);
