@@ -30,7 +30,7 @@ export default function CodeBlock() {
 
   // Initialize socket and fetch code block data
   useEffect(() => {
-    const backendUrl = 'http://code-with-tom-production.up.railway.app';
+    const backendUrl = 'https://code-with-tom-production.up.railway.app';
     socket.current = io(backendUrl);
 
     // Fetch code block data from server
