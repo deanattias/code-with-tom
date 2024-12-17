@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
+import CodeBlockItem from './CodeBlockItem';
 import { Grid } from '@mui/material';
-import CodeBlockItem from './CodeBlockItem';  // Import the new component
 
 interface CodeBlock {
   id: number;
@@ -11,7 +11,7 @@ export default function CodeBlockList() {
   const [codeBlocks, setCodeBlocks] = useState<CodeBlock[]>([]);
 
   useEffect(() => {
-    fetch('https://code-with-tom-production.up.railway.app/api/code-blocks')
+    fetch('/api/code-blocks')
       .then(res => res.json())
       .then(data => setCodeBlocks(data));
   }, []);
