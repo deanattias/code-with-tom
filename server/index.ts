@@ -21,10 +21,6 @@ app.use(morgan('dev'));
 // API Routes
 app.use('/api/code-blocks', codeBlockRoutes);
 
-// Root route
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
 
 // Create HTTP server and pass the Express app
 const server = http.createServer(app);
