@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  backend:
+    container_name: codewithtom-backend
+    build:
+      context: server
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=postgresql://admin:password@db:5432/codewithtom
+    depends_on:
+      - db
+
+  db:
+    container_name: codewithtom-db
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: codewithtom
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  frontend:
+    container_name: codewithtom-frontend
+    build:
+      context: client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

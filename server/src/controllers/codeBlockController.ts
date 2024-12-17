@@ -5,13 +5,12 @@ export const getCodeBlocks = async (req: Request, res: Response) => {
   try {
     const blocks = await fetchAllCodeBlocks();
     res.json(blocks);
-  } catch (error: any) {  // TypeScript may require typing the error
+  } catch (error: any) {
     console.error('Error fetching code blocks:', error);
-    // Provide more details in the error message, useful for debugging
     res.status(500).json({
       message: 'Error fetching code blocks',
-      error: error.message || 'Unknown error', // Display specific error message if available
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined // Include stack trace in development only
+      error: error.message || 'Unknown error',
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
 };
