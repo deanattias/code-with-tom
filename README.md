@@ -4,7 +4,7 @@
 
 This side project highlights clean architecture, robust full-stack engineering practices, and practical coding solutions.
 
- **Live Demo:** [Code With Tom on Vercel](https://code-with-tom-deans-projects-729ccfbf.vercel.app/)
+ **Live Demo:** [Code With Tom on Vercel](https://code-with-lvm30enca-deanattias.vercel.app/)
 
 ---
 
