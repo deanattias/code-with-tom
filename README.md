@@ -16,7 +16,6 @@ This side project highlights clean architecture, robust full-stack engineering p
 * [Usage](#usage)
 * [Task Automation](#task-automation)
 * [Deployment](#deployment)
-* [Credits](#credits)
 
 ---
 
