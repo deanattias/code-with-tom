@@ -30,11 +30,10 @@ export default function CodeBlock() {
 
   // Initialize socket and fetch code block data
   useEffect(() => {
-    const backendUrl = 'https://code-with-tom-production.up.railway.app';
-    socket.current = io(backendUrl);
+    socket.current = io();
 
     // Fetch code block data from server
-    fetch(`${backendUrl}/api/code-blocks/${id}`)
+    fetch(`/api/code-blocks/${id}`)
       .then((res) => res.json())
       .then((data: CodeBlockData) => {
         setTitle(data.title);
@@ -70,7 +69,7 @@ export default function CodeBlock() {
     };
   }, [id]);
 
-  //
+
   const handleCodeChanged = (newCode: string) => {
     setCode(newCode);
   };

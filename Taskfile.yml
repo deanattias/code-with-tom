@@ -1,0 +1,29 @@
+version: "3"
+
+tasks:
+  start:
+    desc: "Start the entire project (frontend, backend, database, and seeder)"
+    cmds:
+      - task docker-up
+      - task seed-db
+
+  docker-up:
+    desc: "Start Docker services"
+    cmds:
+      - docker-compose down
+      - docker-compose up --build -d
+
+  seed-db:
+    desc: "Seed the database with initial data"
+    cmds:
+      - cd server && npx ts-node seedDB.ts
+
+  docker-down:
+    desc: "Stop all Docker containers"
+    cmds:
+      - docker-compose down
+
+  logs:
+    desc: "Show logs for all services"
+    cmds:
+      - docker-compose logs -f
