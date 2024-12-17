@@ -32,15 +32,21 @@ export default function CodeBlock() {
   useEffect(() => {
     socket.current = io();
 
-    // Fetch code block data from server
-    fetch(`/api/code-blocks/${id}`)
-      .then((res) => res.json())
-      .then((data: CodeBlockData) => {
+    const fetchCodeBlockData = async () => {
+      try {
+        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080"; // Fallback to local backend if not set
+        const res = await fetch(`${API_URL}/api/code-blocks/${id}`);
+        const data: CodeBlockData = await res.json();
         setTitle(data.title);
         setCode(data.code);
         setSolution(data.solution);
         socket.current?.emit('join-room', id);
-      });
+      } catch (error) {
+        console.error("Error fetching code block data:", error);
+      }
+    };
+
+    fetchCodeBlockData();
 
     // Define socket event handlers
     const handleAssignRole = (data: { role: string }) => {
@@ -53,7 +59,6 @@ export default function CodeBlock() {
       setMentorCount(counts.mentors);
       setStudentCount(counts.students);
     };
-
 
     // Set up socket event listeners
     socket.current?.on('assign-role', handleAssignRole);
@@ -69,14 +74,11 @@ export default function CodeBlock() {
     };
   }, [id]);
 
-
   const handleCodeChanged = (newCode: string) => {
     setCode(newCode);
   };
 
   // Normalize code by removing comments and extra whitespace
-  // Note that current code-check implementation is not ideal
-  // See suggestion below
   const normalizeCode = (code: string): string => {
     const withoutComments = code.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, '');
     return withoutComments.replace(/\s+/g, '').replace(/\r\n/g, '\n').trim();
@@ -94,9 +96,6 @@ export default function CodeBlock() {
       socket.current?.emit('code-changed', { roomId: id, newCode });
 
       // Check if student's code matches the solution
-      // Current implementation is not ideal as student code must be identical to solution text
-      // Better approach: send code to a backend service that executes it and returns the result
-      // See https://github.com/microsoft/monaco-editor.git
       if (normalizedCode === normalizedSolution) {
         setIsCompleted(true);
       }
