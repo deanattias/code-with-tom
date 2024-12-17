@@ -27,14 +27,14 @@ export default function CodeBlock() {
   const [isCompleted, setIsCompleted] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [welcomeMessage, setWelcomeMessage] = useState('');
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
   // Initialize socket and fetch code block data
   useEffect(() => {
-    socket.current = io();
+    socket.current = io(API_URL);
 
     const fetchCodeBlockData = async () => {
       try {
-        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080"; // Fallback to local backend if not set
         const res = await fetch(`${API_URL}/api/code-blocks/${id}`);
         const data: CodeBlockData = await res.json();
         setTitle(data.title);

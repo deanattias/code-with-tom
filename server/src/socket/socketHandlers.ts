@@ -6,6 +6,7 @@ export const setupSocketHandlers = (io: Server) => {
   io.on('connection', (socket: Socket) => {
     console.log(`A user connected: ${socket.id}`);
 
+    // When a user joins a room
     socket.on('join-room', (roomId: string) => {
       socket.join(roomId);
 
@@ -16,7 +17,7 @@ export const setupSocketHandlers = (io: Server) => {
 
       const roomData = roomParticipants.get(roomId);
 
-      // Determine the role (mentor/student) ensuring only one mentor
+      // Determine role assignment (mentor or student)
       if (roomData && roomData.mentors.size === 0) {
         roomData.mentors.add(socket.id);
         socket.emit('assign-role', { role: 'mentor' });
@@ -37,6 +38,7 @@ export const setupSocketHandlers = (io: Server) => {
       console.log(`A ${role} joined room ${roomId} (ID: ${socket.id})`);
     });
 
+    // When code changes in the room
     socket.on('code-changed', ({ roomId, newCode }) => {
       const roomData = roomParticipants.get(roomId);
 
@@ -47,6 +49,7 @@ export const setupSocketHandlers = (io: Server) => {
       }
     });
 
+    // When a user disconnects
     socket.on('disconnect', () => {
       console.log(`User disconnected: ${socket.id}`);
 
@@ -54,6 +57,14 @@ export const setupSocketHandlers = (io: Server) => {
       for (const [roomId, roomData] of roomParticipants.entries()) {
         if (roomData.mentors.has(socket.id)) {
           roomData.mentors.delete(socket.id);
+
+          // If the mentor leaves, assign a new one (if needed)
+          if (roomData.mentors.size === 0 && roomData.students.size > 0) {
+            const firstStudent = Array.from(roomData.students)[0]; // Assign first student as mentor
+            roomData.mentors.add(firstStudent);
+            socket.to(roomId).emit('assign-role', { role: 'mentor' });
+            console.log(`Mentor reassigned to ${firstStudent} in room ${roomId}`);
+          }
         } else if (roomData.students.has(socket.id)) {
           roomData.students.delete(socket.id);
         }

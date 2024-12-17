@@ -32,7 +32,7 @@ const server = http.createServer(app);
 // Initialize Socket.IO on the HTTP server
 const io = new SocketServer(server, {
   cors: {
-    origin: '*'  // Ensuring CORS is handled for Socket.IO
+    origin: '*'
   }
 });
 
@@ -40,7 +40,7 @@ const io = new SocketServer(server, {
 setupSocketHandlers(io);
 
 // Start the server
-const PORT = process.env.PORT || 3000; // Use a single port variable
+const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
